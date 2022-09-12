@@ -1,7 +1,7 @@
 from __future__ import print_function
 from pixtendv2l import PiXtendV2L   # Import PiXtend V2 class
 from punchingmachine import PunchingMachine
-from conveyorbelt import ConveyorBelt
+# from conveyorbelt import ConveyorBelt
 
 # PLC Object
 
@@ -23,8 +23,8 @@ if p is not None:
         try:
             # Check if SPI communication is running and the received data is correct
             if p.crc_header_in_error is False and p.crc_data_in_error is False:
-                pm1 = PunchingMachine(pm1, I0, I1, I2, I3, D4, D5, D6, D7)
-                cb1 = ConveyorBelt()
+                pm1 = PunchingMachine(1, I0, I1, I2, I3, D4, D5, D6, D7)
+                # cb1 = ConveyorBelt()
                 pm1.set_initial_state_pm()
                 pm1.conveyor_fw_operation()
                 pm1.punching_machine_operation()
@@ -35,5 +35,3 @@ if p is not None:
             del p
             p = None
             break
-
-
