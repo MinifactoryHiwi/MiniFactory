@@ -35,13 +35,10 @@ class SortingLine:
             self.conveyor_motor = True
             time.sleep(1)
 
-
     def analog_sensor(self):
-
+        pass
 
     def colour_sorting(self):
         if self.light_barrier_after_color is False:
-
-
-
+            pass
 
