@@ -1,89 +1,114 @@
-"""
-Class for the punching machine. Saves the ID of the punching machine and also all the digital inputs and outputs in an 
-ordered and readable fashion. Functions for the later usage of the class are used here.
-"""
-import time
-# from statemachine import StateMachine, State
-
 
 class PunchingMachine:
 
-    def __init__(self, machine_id, photo_sensor_io: bool, photo_sensor_pm: bool, switch_up: bool,
-                 switch_down: bool, motor_cv_fw: bool, motor_cv_bw: bool, motor_pm_up: bool, motor_pm_down):
-        self.machine_id = machine_id
-        self.photo_sensor_io = photo_sensor_io
-        self.photo_sensor_pm = photo_sensor_pm
-        self.switch_up = switch_up
-        self.switch_down = switch_down
-        self.motor_cv_fw = motor_cv_fw
-        self.motor_cv_bw = motor_cv_bw
-        self.motor_pm_up = motor_pm_up
-        self.motor_pm_down = motor_pm_down
+    def __init__(self, punching_machine_id, plc_object):
+        self.punching_machine_id = punching_machine_id
+        self.plc_object = plc_object
+        self.photo_sensor_io = False
+        self.photo_sensor_pm = False
+        self.switch_up = False
+        self.switch_down = False
+        self.motor_cv_fw = False
+        self.motor_cv_bw = False
+        self.motor_pm_up = False
+        self.motor_pm_down = False
         self.switch_up_counter = 0  # variable used for the punching machine operation. Tracks the usage of the pm
-        """
-        idle = State("initial", initial=True)
-        conveyor_fw = State("forward operation")
-        conveyor_bw = State("backward operation")
-        punching = State("punching")
 
-        object_in_io_sensor = idle.to(conveyor_fw)
-        conveyor_fw_to_pm = conveyor_fw.to(punching)
-        pm_to_conveyor_bw = punching.to(conveyor_bw)
-        finishing_up = conveyor_bw.to(idle)
-        """
+    def photo_sensor_io(self):
+        return self.photo_sensor_io
+
+    def photo_sensor_pm(self):
+        return self.photo_sensor_pm
+
+    def switch_up(self):
+        return self.switch_up
+
+    def switch_down(self):
+        return self.switch_down
+
+    @property
+    def motor_pm_up(self):
+        return self._motor_pm_up
+
+    @motor_pm_up.setter
+    def motor_pm_up(self, value):
+        self._motor_pm_up = value
+
+    @property
+    def motor_pm_down(self):
+        return self._motor_pm_up
+
+    @motor_pm_down.setter
+    def motor_pm_down(self, value):
+        self._motor_pm_up = value
+
+    @property
+    def motor_cv_fw(self):
+        return self._motor_cv_fw
+
+    @motor_cv_fw.setter
+    def motor_cv_fw(self, value):
+        self._motor_cv_fw = value
+
+    @property
+    def motor_cv_bw(self):
+        return self._motor_cv_bw
+
+    @motor_cv_bw.setter
+    def motor_cv_bw(self, value):
+        self._motor_cv_bw = value
+
     def set_initial_state_pm(self):
         """
         For the initial state: If the punching machine is not in its highest position, it should move up
         until it has reached max. height. The rest of the actuators should remain inactive.
         """
-        while self.switch_down is True:
-            self.motor_pm_up = True
-            if self.switch_up is True:
-                self.motor_pm_up = False
-        self.motor_cv_fw = False
-        self.motor_cv_bw = False
-        self.motor_pm_up = False
-        self.motor_pm_down = False
-        print("InitialState was executed")
+        if self.switch_down is True:
+            while self.plc_object.digital_in2 is False:
+                self.motor_pm_up = True
+                self.plc_object.digital_out4 = self.motor_pm_up
+            self.motor_pm_up = False
+            self.plc_object.digital_out4 = self.motor_pm_up
+        if self.switch_up is True:
+            print("Machine in its initial state")
 
     def conveyor_fw_operation(self):
-        io_sensor_flag = 0
-        if self.photo_sensor_io is False and io_sensor_flag is False:
-            while self.photo_sensor_pm is True:
-                io_sensor_flag = 1
+        if self.photo_sensor_io is False and self.photo_sensor_pm is True:
+            while self.plc_object.digital_in1 is True:
                 self.motor_cv_fw = True
-                time.sleep(0.25)
+                self.plc_object.digital_out2 = self.motor_cv_fw
             self.motor_cv_fw = False
-        if self.photo_sensor_io is False and io_sensor_flag is True:
-            self.motor_cv_fw = False
-            print(f"2 Objects on the conveyor belt of {self.machine_id}.ERROR")
-            time.sleep(1)
-            # TODO: At a later stage implement a way of communicating this to the turtle bots via the PLC
-        print("FW Operation was executed")
+            self.plc_object.digital_out2 = self.motor_cv_fw
+        print("Nothing to do in conveyor_fw_operation for pm")
 
     def conveyor_bw_operation(self):
-        if self.photo_sensor_pm is False and self.switch_up_counter % 2 == 0:
-            while self.photo_sensor_io is True:
+        print("Entered conveyor_bw_operation of punching machine")
+        if self.photo_sensor_io is True and self.photo_sensor_pm is False:
+            while self.plc_object.digital_in0 is True:
                 self.motor_cv_bw = True
-                time.sleep(0.25)
-            self.motor_cv_bw = False
-        print("BW Operation was executed")
+                self.plc_object.digital_out3 = self.motor_cv_bw
+            self.motor_cv_fw = False
+            self.plc_object.digital_out3 = self.motor_cv_fw
+        print("Nothing to do in conveyor_bw_operation for pm")
 
     def punching_machine_operation(self):
-        # if self.switch_up is True and self.photo_sensor_pm is False:
         """
         pm motor should only switch on if the upper switch has been pressed twice. Once on when it has reached max.
         height and once it has returned to its initial position.
         """
         if self.switch_up_counter % 2 == 0:
             self.switch_up_counter += 1
-            while self.switch_down is False:
+            while self.plc_object.digital_in3 is False:
                 self.motor_pm_down = True
+                self.plc_object.digital_out5 = True
             self.motor_pm_down = False
-        while self.switch_up is False:
-            self.motor_pm_up = True
-            time.sleep(0.25)
-        self.motor_pm_up = False
+            self.plc_object.digital_out5 = False
+
+            while self.switch_up is False:
+                self.motor_pm_up = True
+                self.plc_object.digital_out4 = True
+            self.motor_pm_up = False
+            self.plc_object.digital_out4 = False
         self.switch_up_counter += 1
         print(f"Counter of how often the upper switch is being toggled: {self.switch_up_counter}.")
         print("PM was executed")

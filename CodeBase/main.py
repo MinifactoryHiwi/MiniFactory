@@ -1,13 +1,12 @@
 from __future__ import print_function
 from pixtendv2l import PiXtendV2L   # Import PiXtend V2 class
-# from punchingmachine import PunchingMachine
+from punchingmachine import PunchingMachine
 from conveyorbelt import ConveyorBelt
-# import time
 
 # PLC Object
 p = PiXtendV2L()
 cb1 = ConveyorBelt(1, p)
-
+pm1 = PunchingMachine(1, p)
 # Definitions of the Pins of the PLC (NOT FINAL)
 """
 I0 = p.digital_in0  # Photo-transistor goods in/out (conveyor belt)
@@ -32,6 +31,10 @@ cycle = 0
 
 def update_input_pins():
     inputs.clear()
+    inputs.append(p.digital_in0)
+    inputs.append(p.digital_in1)
+    inputs.append(p.digital_in2)
+    inputs.append(p.digital_in3)
     inputs.append(p.digital_in4)
     inputs.append(p.digital_in5)
     inputs.append(p.digital_in6)
@@ -49,10 +52,21 @@ if p is not None:
             if p.crc_header_in_error is False and p.crc_data_in_error is False:
                 if cycle >= 1:
                     update_input_pins()
-                    cb1.in_sensor = inputs[0]
-                    cb1.out_sensor = inputs[1]
-                    cb1.pulse_button = inputs[2]
-                    cb1.conveyor_operation()
+                    pm1.photo_sensor_io = inputs[0]
+                    pm1.photo_sensor_pm = inputs[1]
+                    pm1.switch_up = inputs[2]
+                    pm1.switch_down = inputs[3]
+                    cb1.in_sensor = inputs[4]
+                    cb1.out_sensor = inputs[5]
+                    cb1.pulse_button = inputs[6]
+
+                    cb1.conveyor_operation_fw()
+                    pm1.set_initial_state_pm()
+                    pm1.conveyor_fw_operation()
+                    # pm1.punching_machine_operation()
+                    pm1.conveyor_bw_operation()
+                    # await instructions
+                    cb1.conveyor_operation_bw()
 
                 cycle += 1
                 print(cycle)

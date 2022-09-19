@@ -46,36 +46,29 @@ class ConveyorBelt:
     def motor_bw(self, value):
         self._motor_bw = value
 
-    def conveyor_operation(self):
-        time.sleep(1)  # test purpose
-        print(f"Self-in sensor value: {self.in_sensor}")
-        if self.in_sensor is False:
-            print("Entered if")
-            print(self.out_sensor)
-            while self.out_sensor is True:
-                print("Entered while")
-                self.motor_fw = True
-                self.plc_object.digital_out0 = self.motor_fw
-                # TODO: GET THIS PART TO WORK
-                """
-                if self.out_sensor is True:
-                    time.sleep(0.75)
-                    self.motor_fw = False
+    def conveyor_operation_fw(self):
+        print("Entered Conveyor FW Operation")
+        if self.in_sensor is not self.out_sensor:       # mutual exclusion
+            print(f"No objects detected simultaneously")
+            if self.in_sensor is False:
+                print("Entered forward if")
+                while self.plc_object.digital_in5 is True:
+                    self.motor_fw = True
                     self.plc_object.digital_out0 = self.motor_fw
-                """
-    """
-    def conveyor_operation(self):
-        time.sleep(1)
-        if self.in_sensor is False and self.out_sensor is True:
-            self.motor_fw = True
-            return self._motor_fw
-        else:
-            return False
+                print("exited while-loop")
+                time.sleep(0.75)
+                self.motor_fw = False
+                self.plc_object.digital_out0 = self.motor_fw
 
-        if self.out_sensor is False:
-            while self.in_sensor is True:
-                self.motor_bw = True
-                if self.in_sensor is True:
-                    time.sleep(0.75)
-                    self.motor_bw = False
-    """
+    def conveyor_operation_bw(self):
+        if self.in_sensor is not self.out_sensor:       # mutual exclusion
+            if self.out_sensor is False:
+                print("Entered backward if")
+                while self.plc_object.digital_in4 is True:
+                    self.motor_bw = True
+                    self.plc_object.digital_out1 = self.motor_bw
+                print("Exited while-loop")
+                time.sleep(0.75)
+                self.motor_bw = False
+                self.plc_object.digital_out1 = self.motor_bw
+
