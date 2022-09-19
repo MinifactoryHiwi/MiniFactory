@@ -1,3 +1,5 @@
+import time
+
 
 class PunchingMachine:
 
@@ -12,7 +14,6 @@ class PunchingMachine:
         self.motor_cv_bw = False
         self.motor_pm_up = False
         self.motor_pm_down = False
-        self.switch_up_counter = 0  # variable used for the punching machine operation. Tracks the usage of the pm
 
     def photo_sensor_io(self):
         return self.photo_sensor_io
@@ -64,7 +65,9 @@ class PunchingMachine:
         until it has reached max. height. The rest of the actuators should remain inactive.
         """
         if self.switch_down is True:
+            print("Set initial state")
             while self.plc_object.digital_in2 is False:
+                time.sleep(0.5)
                 self.motor_pm_up = True
                 self.plc_object.digital_out4 = self.motor_pm_up
             self.motor_pm_up = False
@@ -96,19 +99,18 @@ class PunchingMachine:
         pm motor should only switch on if the upper switch has been pressed twice. Once on when it has reached max.
         height and once it has returned to its initial position.
         """
-        if self.switch_up_counter % 2 == 0:
-            self.switch_up_counter += 1
+        if self.switch_up is True and self.photo_sensor_pm is False:
             while self.plc_object.digital_in3 is False:
                 self.motor_pm_down = True
-                self.plc_object.digital_out5 = True
+                self.plc_object.digital_out5 = self.motor_pm_down
+            time.sleep(0.5)
             self.motor_pm_down = False
-            self.plc_object.digital_out5 = False
+            self.plc_object.digital_out5 = self.motor_pm_down
 
-            while self.switch_up is False:
+            while self.plc_object.digital_in2 is False:
                 self.motor_pm_up = True
-                self.plc_object.digital_out4 = True
+                self.plc_object.digital_out4 = self.motor_pm_up
+            time.sleep(0.5)
             self.motor_pm_up = False
-            self.plc_object.digital_out4 = False
-        self.switch_up_counter += 1
-        print(f"Counter of how often the upper switch is being toggled: {self.switch_up_counter}.")
-        print("PM was executed")
+            self.plc_object.digital_out4 = self.motor_pm_up
+
