@@ -63,9 +63,8 @@ if p is not None:
                     cb1.conveyor_operation_fw()
                     pm1.set_initial_state_pm()
                     pm1.conveyor_fw_operation()
-                    # pm1.punching_machine_operation()
+                    pm1.punching_machine_operation()
                     pm1.conveyor_bw_operation()
-                    # await instructions
                     cb1.conveyor_operation_bw()
 
                 cycle += 1

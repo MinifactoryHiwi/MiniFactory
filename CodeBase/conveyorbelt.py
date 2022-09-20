@@ -61,6 +61,7 @@ class ConveyorBelt:
                 self.plc_object.digital_out0 = self.motor_fw
 
     def conveyor_operation_bw(self):
+        print("Entered Conveyor BW Operation")
         if self.in_sensor is not self.out_sensor:       # mutual exclusion
             if self.out_sensor is False:
                 print("Entered backward if")

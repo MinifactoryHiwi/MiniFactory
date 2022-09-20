@@ -74,6 +74,12 @@ class PunchingMachine:
             self.plc_object.digital_out4 = self.motor_pm_up
         if self.switch_up is True:
             print("Machine in its initial state")
+        if self.switch_up is False and self.switch_down is False:
+            while self.plc_object.digital_in2 is False:
+                self.motor_pm_up = True
+                self.plc_object.digital_out4 = self.motor_pm_up
+            self.motor_pm_up = False
+            self.plc_object.digital_out4 = self.motor_pm_up
 
     def conveyor_fw_operation(self):
         if self.photo_sensor_io is False and self.photo_sensor_pm is True:
@@ -90,6 +96,7 @@ class PunchingMachine:
             while self.plc_object.digital_in0 is True:
                 self.motor_cv_bw = True
                 self.plc_object.digital_out3 = self.motor_cv_bw
+            time.sleep(0.75)
             self.motor_cv_fw = False
             self.plc_object.digital_out3 = self.motor_cv_fw
         print("Nothing to do in conveyor_bw_operation for pm")
