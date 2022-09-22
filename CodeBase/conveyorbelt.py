@@ -48,28 +48,26 @@ class ConveyorBelt:
 
     def conveyor_operation_fw(self):
         print("Entered Conveyor FW Operation")
-        if self.in_sensor is not self.out_sensor:       # mutual exclusion
+        if self.in_sensor is False and self.out_sensor is True:       # mutual exclusion
             print(f"No objects detected simultaneously")
-            if self.in_sensor is False:
-                print("Entered forward if")
-                while self.plc_object.digital_in5 is True:
-                    self.motor_fw = True
-                    self.plc_object.digital_out0 = self.motor_fw
-                print("exited while-loop")
-                time.sleep(0.75)
-                self.motor_fw = False
+            print("Entered forward if")
+            while self.plc_object.digital_in5 is True:
+                self.motor_fw = True
                 self.plc_object.digital_out0 = self.motor_fw
+            print("exited while-loop")
+            time.sleep(0.75)
+            self.motor_fw = False
+            self.plc_object.digital_out0 = self.motor_fw
 
     def conveyor_operation_bw(self):
         print("Entered Conveyor BW Operation")
-        if self.in_sensor is not self.out_sensor:       # mutual exclusion
-            if self.out_sensor is False:
-                print("Entered backward if")
-                while self.plc_object.digital_in4 is True:
-                    self.motor_bw = True
-                    self.plc_object.digital_out1 = self.motor_bw
-                print("Exited while-loop")
-                time.sleep(0.75)
-                self.motor_bw = False
+        if self.in_sensor is True and self.out_sensor is False:       # mutual exclusion
+            print("Entered backward if")
+            while self.plc_object.digital_in4 is True:
+                self.motor_bw = True
                 self.plc_object.digital_out1 = self.motor_bw
+            print("Exited while-loop")
+            time.sleep(0.75)
+            self.motor_bw = False
+            self.plc_object.digital_out1 = self.motor_bw
 
