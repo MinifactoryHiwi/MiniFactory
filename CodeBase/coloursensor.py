@@ -8,6 +8,8 @@ class ColourSensor:
         self.plc_object = plc_object
         self.recognized_color = 0.0
 
+    init_values = []
+
     @property
     def recognized_color(self):
         return self._recognized_color
@@ -17,7 +19,9 @@ class ColourSensor:
         self._recognized_color = value
 
     def color_recognition(self):
-        pass
+        if self.plc_object.analog_in0 > 0 and count:
+            init_values.append(self.plc_object.analog_in0)
+
 
 
 

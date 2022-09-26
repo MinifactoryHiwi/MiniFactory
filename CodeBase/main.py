@@ -12,20 +12,40 @@ sl1 = SortingLine(1, p)
 
 # Definitions of the Pins of the PLC (NOT FINAL)
 """
-I0 = p.digital_in0  # Photo-transistor goods in/out (conveyor belt)
-I1 = p.digital_in1  # Photo-transistor punching machine
-I2 = p.digital_in2  # Switch punching machine up
-I3 = p.digital_in3  # Switch punching machine down
-D4 = p.digital_out4  # Motor conveyor forward
-D5 = p.digital_out5  # Motor conveyor backward
-D6 = p.digital_out6  # Motor punching machine up
-D7 = p.digital_out7  # Motor punching machine down
-DI4 = p.digital_in4  # Sensor in
-DI5 = p.digital_in5  # Sensor out
-DI6 = p.digital_in6  # Impulse Switch
+INPUTS:
+DI0 = p.digital_in0  # Photo-transistor goods in/out punching machine
+DI1 = p.digital_in1  # Photo-transistor punching machine
+DI2 = p.digital_in2  # Switch punching machine up
+DI3 = p.digital_in3  # Switch punching machine down
+
+DI4 = p.digital_in4  # Conveyor Sensor in
+DI5 = p.digital_in5  # Conveyor Sensor out
+DI6 = p.digital_in6  # Conveyor Impulse Switch
+
+DI7 = p.digital_in7  # Sorting Line Pulse Counter
+DI8 = p.digital_in8  # Sorting Line light barrier in
+DI9 = p.digital_in9  # Sorting Line light barrier after colour
+DI10 = p.digital_in10 # Sorting Line light barrier white
+DI11 = p.digital_in10 # Sorting Line light barrier red
+DI12 = p.digital_in10 # Sorting Line light barrier blue
+
+OUTPUTS:
 DO0 = p.digital_out0  # Conveyor motor forward
 DO1 = p.digital_out1  # Conveyor motor backward
+
+D02 = p.digital_out2  # Motor conveyor forward punching machine
+D03 = p.digital_out3  # Motor conveyor backward punching machine
+D04 = p.digital_out4  # Motor punching machine up
+D05 = p.digital_out5  # Motor punching machine down
+
+D06 = p.digital_out6  # Motor conveyor sorting line
+D07 = p.digital_out7  # Motor Compressor
+D08 = p.digital_out8  # Valve White
+D09 = p.digital_out9  # Valve Red
+D010 = p.digital_out10  # Valve Blue
+
 """
+
 # Variables to be used
 inputs = []
 outputs = []

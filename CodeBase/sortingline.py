@@ -113,3 +113,12 @@ class SortingLine:
             print("light barrier detects object")
             self.compressor = True
             self.plc_object.digital_out8 = self.compressor
+        if color_sensor_fct = 1:
+            pass
+        if color_sensor_fct = 2:
+            pass:
+        if color_sensor_fct = 3:
+            pass:
+        if color_sensor_fct =4:
+            print("Let the object pass through")
+
