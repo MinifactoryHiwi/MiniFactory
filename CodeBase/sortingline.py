@@ -3,12 +3,13 @@ Class for controlling the operation of the sorting line.
 """
 
 import time
-# from coloursensor import ColourSensor
+from coloursensor import ColourSensor
 
 
-class SortingLine:
+class SortingLine(ColourSensor):
 
     def __init__(self, machine_id, plc_object):
+        self.impulse_counter = False
         self.machine_id = machine_id
         self.light_barrier_in = False
         self.light_barrier_after_color = False
@@ -22,7 +23,7 @@ class SortingLine:
         self.valve_ejector_blue = False
         self.valve_ejector_red = False
         self.plc_object = plc_object
-        self.impulse_counter = 5
+        super().__init__(sensor_id=1, plc_object=self.plc_object)
 
 # Basic Getters for the Inputs
     def light_barrier_in(self):
@@ -103,22 +104,27 @@ class SortingLine:
             self.plc_object.digital_out7 = self.conveyor_motor
         print("Do nothing")
 
-    def colour_sorting(self):
-        if self.light_barrier_after_color is False:
-            pass
-
     def conveyor_op_light_to_end(self):
+        detected_color = 0
         print("Entered")
-        if self.light_barrier_in is False:
+        if self.light_barrier_after_color is False:
             print("light barrier detects object")
             self.compressor = True
             self.plc_object.digital_out8 = self.compressor
-        if color_sensor_fct = 1:
-            pass
-        if color_sensor_fct = 2:
-            pass:
-        if color_sensor_fct = 3:
-            pass:
-        if color_sensor_fct =4:
-            print("Let the object pass through")
-
+            detected_color = self.color_recognition()
+        if detected_color is 0:
+            # BAD CODE just temporary for demonstration purposes
+            print("Object passes through")
+            self.conveyor_motor = True
+            self.plc_object.digital_out7 = self.conveyor_motor
+            time.sleep(2)
+        if detected_color is 1:
+            print("Sort in Red")
+        if detected_color is 2:
+            print("Sort in Blue")
+        if detected_color is 3:
+            print("Sort in White")
+        self.compressor = False
+        self.plc_object.digital_out8 = self.compressor
+        self.conveyor_motor = False
+        self.plc_object.digital_out7 = self.conveyor_motor

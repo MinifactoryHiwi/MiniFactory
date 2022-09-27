@@ -64,7 +64,7 @@ if p is not None:
                     if new_value_impulse_counter is not start_value_impulse_counter:
                         start_value_impulse_counter = new_value_impulse_counter
                         counter -= 1
-                
+                """
                 # print(f"init value:{init_values}")
                 # print(f"value of sensor:{p.analog_in0}")
                 if p.analog_in0 > 0.0 and steps <= 10:
@@ -74,7 +74,7 @@ if p is not None:
                     if len(init_values) > 0 and sum(init_values) > 0:
                         default_sensor_value = sum(init_values)/len(init_values)
                 print(f"Default_sensor_value {default_sensor_value}")
-                p.digital_out6 = True
+                p.digital_out7 = True
                 if default_sensor_value != 0:
                     normalized_sensor_output = p.analog_in0 / default_sensor_value
 
@@ -86,6 +86,7 @@ if p is not None:
 
                 if len(detection_red) > 0 and cycle_counter > 7000:
                     print(f"minimum value of red:{min(detection_red)}")
+                    print(f"minimum value of red:{max(detection_red)}")
                     a = min(detection_red) + delta_y
                     b = min(detection_red) - delta_y
                     i = 0
@@ -94,19 +95,19 @@ if p is not None:
                             detection_red.pop(i)
                         i += 1
                 # print(detection_red)
-                """
+
                 # p.digital_out7 = True
                 # print(p.analog_in0)
                 # print(f"Normalized Value {p.analog_in0/a}")
                 # if p.analog_in0/a >= 0.5:
                 #    print("Entered if")
                 #    p.digital_out8 = False
-                p.digital_out8 = True
-                p.digital_out6 = True
-                p.digital_out7 = True
+                # p.digital_out8 = True
+                # p.digital_out6 = True
+                # p.digital_out7 = True
 
-                p.digital_out9 = True
-                p.digital_out10 = True
+                # p.digital_out9 = True
+                # p.digital_out10 = True
                 """
                 a = p.analog_in0_raw
                 f = open("AnalogSensor.csv", "a", newline="")

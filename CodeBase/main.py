@@ -6,9 +6,9 @@ from sortingline import SortingLine
 
 # PLC Object
 p = PiXtendV2L()
-# cb1 = ConveyorBelt(1, p)
-# pm1 = PunchingMachine(1, p)
-sl1 = SortingLine(1, p)
+cb1 = ConveyorBelt(1, p)
+pm1 = PunchingMachine(1, p)
+# sl1 = SortingLine(1, p)
 
 # Definitions of the Pins of the PLC (NOT FINAL)
 """
@@ -84,28 +84,31 @@ if p is not None:
 
                     update_input_pins()
 
-                    # pm1.photo_sensor_io = inputs[0]
-                    # pm1.photo_sensor_pm = inputs[1]
+                    pm1.photo_sensor_io = inputs[0]
+                    pm1.photo_sensor_pm = inputs[1]
+                    pm1.switch_up = inputs[2]
+                    pm1.switch_down = inputs[3]
+                    cb1.in_sensor = inputs[4]
+                    cb1.out_sensor = inputs[5]
+                    cb1.pulse_button = inputs[6]
+                    # sl1.impulse_counter = inputs[7]
+                    # sl1.light_barrier_in = inputs[8]
+                    # sl1.light_barrier_after_color = inputs[9]
+                    # sl1.light_barrier_white = inputs[10]
+                    # sl1.light_barrier_red = inputs[11]
+                    # sl1.light_barrier_blue = inputs[12]
 
-                    # pm1.switch_up = inputs[2]
-                    # pm1.switch_down = inputs[3]
-                    # cb1.in_sensor = inputs[4]
-                    # cb1.out_sensor = inputs[5]
-                    # cb1.pulse_button = inputs[6]
-                    sl1.light_barrier_in = inputs[9]
-                    sl1.light_barrier_after_color = inputs[10]
+                    cb1.conveyor_operation_fw()
 
-                    # cb1.conveyor_operation_fw()
+                    pm1.set_initial_state_pm()
+                    pm1.conveyor_fw_operation()
+                    pm1.punching_machine_operation()
+                    pm1.conveyor_bw_operation()
 
-                    # pm1.set_initial_state_pm()
-                    # pm1.conveyor_fw_operation()
-                    # pm1.punching_machine_operation()
-                    # pm1.conveyor_bw_operation()
+                    cb1.conveyor_operation_bw()
 
-                    # cb1.conveyor_operation_bw()
-
-                    sl1.conveyor_op_to_light()
-                    sl1.conveyor_op_light_to_end()
+                    # sl1.conveyor_op_to_light()
+                    # sl1.conveyor_op_light_to_end()
 
                 cycle += 1
                 print(cycle)
