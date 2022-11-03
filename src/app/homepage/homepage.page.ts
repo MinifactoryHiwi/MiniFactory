@@ -20,6 +20,9 @@ export class HomepagePage implements OnInit {
     this.router.navigate(['home'])
 
   }
-  
+goToAdmindashboard(){
+  this.router.navigate(['DashboardPage'])
+
+}
 
 }

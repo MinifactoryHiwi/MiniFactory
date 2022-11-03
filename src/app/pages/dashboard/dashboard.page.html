@@ -1,0 +1,211 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary" no-border>
+    <ion-buttons slot="start">
+      <ion-button >
+        <img src="../../assets/menu.svg"/>
+      </ion-button>
+
+    </ion-buttons>
+    <ion-title>Maintenance Dashboard</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <img src="../../assets/notification.svg"/>
+      </ion-button>
+
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+   
+      <div class="graphs">
+        <div class="event-slider">
+          <ion-slides [options]="{ slidesPerView: 'auto', zoom: false, grabCursor: true }" class="default-left-padding">
+            <ion-slide>
+              
+        <ion-card  class=" performance">
+          <ion-card-header>
+            <ion-card-title color="secondary">PERFORMANCE</ion-card-title>
+           
+          </ion-card-header>
+        
+          <ion-card-content>
+            <ion-list>
+              <ion-item>
+                <ion-label color="secondary">Gripper1</ion-label>
+                <ion-radio slot="end" color="warning"></ion-radio>
+              </ion-item>
+              <ion-item>
+                <ion-label color="secondary">Multiprocessing Station</ion-label>
+                <ion-radio slot="end"></ion-radio>
+              </ion-item>
+              <ion-item>
+                <ion-label color="secondary">Conveyor belt1</ion-label>
+                <ion-radio slot="end" color="warning"></ion-radio>
+              </ion-item>
+              <ion-item>
+                <ion-label color="secondary">Gripper2</ion-label>
+                <ion-radio slot="end"></ion-radio>
+              </ion-item>
+              <ion-item>
+                <ion-label color="secondary">Conveyor belt2</ion-label>
+                <ion-radio slot="end"></ion-radio>
+              </ion-item>
+              <ion-item>
+                <ion-label color="secondary">Punching Machine</ion-label>
+                <ion-radio slot="end"></ion-radio>
+              </ion-item>
+              <ion-item>
+                <ion-label color="secondary">Vaccum Gripper</ion-label>
+                <ion-radio slot="end"></ion-radio>
+              </ion-item>
+              <ion-item>
+                <ion-label color="secondary">Conveyor belt3</ion-label>
+                <ion-radio slot="end"></ion-radio>
+              </ion-item>
+              <ion-item>
+                <ion-label color="secondary">Ware house</ion-label>
+                <ion-radio slot="end"></ion-radio>
+              </ion-item>
+              <ion-item>
+                <ion-label color="secondary">turtle Bot</ion-label>
+                <ion-checkbox slot="start"></ion-checkbox>
+              </ion-item>
+
+            </ion-list>
+            
+          </ion-card-content>
+        </ion-card>
+              
+            </ion-slide>
+          
+             
+      <ion-slide>
+        
+         
+        <ion-card class="flexwrapper" >
+          <ion-card-header>
+            <ion-card-title color="secondary">RAW MATERIALS</ion-card-title>
+          </ion-card-header>
+          <canvas #barCanvas style="position: relative ; height: 23px; width: 20px;"></canvas>
+        </ion-card>
+       
+      </ion-slide>
+         <ion-slide>
+          
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title color="secondary">inventory</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <canvas #doughnutCanvas style=" height: 200; width: 200;" ></canvas>
+          </ion-card-content>
+          
+        </ion-card>
+         </ion-slide>
+         <ion-slide>
+          <ion-card>
+            <ion-card-header>
+             <ion-card-title color="secondary"> INVENTORY</ion-card-title> 
+            </ion-card-header>
+            <ion-card-content>
+              <canvas #barcanvas style="position:relative; height:25px; width:20px"></canvas> 
+            </ion-card-content>
+          </ion-card>
+         </ion-slide>
+          </ion-slides>
+        </div>
+      </div>
+      
+      
+      <div  class="layout">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title color="secondary">LAYOUT</ion-card-title>
+          </ion-card-header>
+           <ion-card-content color="primary">
+            <ion-grid  class="grid">
+              <ion-row  >
+                <ion-col  size="0.7" offset="1.3">
+                 GR
+                </ion-col>
+      
+              </ion-row>
+            </ion-grid>
+      
+      
+      
+            <ion-grid  class="grid2" >
+              <ion-row>
+                <ion-col  size="1">
+                 VG
+                </ion-col>
+                <ion-col offset="1" size="0.5">
+                  SL
+                </ion-col>
+                <ion-col offset="2.5" size="0.8">
+                  GR
+                </ion-col>
+                <ion-col offset="1" size="2">
+                  MPS
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+      
+            <ion-grid class="grid3">
+              <ion-row class="ion-no-padding" >
+                <ion-col  size="0.5"  offset="2.2">
+                  CB
+                </ion-col>
+                <ion-col size="0.5" offset="5.5">
+                  CB
+      
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+            <ion-grid class="grid">
+              <ion-row>
+                <ion-col size="0.7" offset="1.9">
+                  GR
+                </ion-col>
+                <ion-col size="1.5" offset="1.9">
+                  CB
+                </ion-col>
+                <ion-col size="1.5"offset="-0.2" >
+                  CB
+                </ion-col>
+                <ion-col size="0.7" offset="0.5">
+                  GR
+                </ion-col>
+                <ion-col size="1.5" offset="0.5">
+                  CB
+                </ion-col>
+                <ion-col size="1.5"  offset="-0.6">
+                  CB
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+            <ion-grid  class="grid">
+              <ion-row  >
+                <ion-col  size="1.5" offset="5.3">
+                 VG
+                </ion-col>
+      
+              </ion-row>
+            </ion-grid>
+            <ion-grid  class="grid">
+              <ion-row  >
+                <ion-col  size="7" offset="2.7">
+                 WH
+                </ion-col>
+      
+              </ion-row>
+            </ion-grid>
+      
+            
+            
+           </ion-card-content>
+        </ion-card>
+      </div>
+    
+</ion-content>
